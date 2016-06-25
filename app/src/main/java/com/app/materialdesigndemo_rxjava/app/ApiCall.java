@@ -6,6 +6,8 @@ import retrofit.http.GET;
 import retrofit.http.Query;
 import rx.Observable;
 
+import java.util.List;
+
 public interface ApiCall {
 
     @GET("/v1/gifs/trending")

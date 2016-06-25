@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,11 +71,12 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onError(Throwable e) {
-
+        Log.e("#####",e.toString());
         }
 
         @Override
         public void onNext(GifsData gifsData) {
+
             myAdapter.addData(gifsData);
         }
     };
@@ -84,7 +86,7 @@ public class MainFragment extends Fragment {
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MainViewHolder> {
-        List<GifsData> gifsDataList = new ArrayList<>();
+        List<GifsData.DataObject> gifsDataList = new ArrayList<>();
 
         @Override
         public MyAdapter.MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -94,8 +96,8 @@ public class MainFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyAdapter.MainViewHolder holder, int position) {
-            GifsData element = gifsDataList.get(position);
-            String imageURL = element.data.get(position).imagesObject.fixedHeight.url;
+            GifsData.DataObject element = gifsDataList.get(position);
+            String imageURL = element.imagesObject.fixedHeight.url;
             Picasso.with(getActivity()).load(imageURL).into(holder.gifsImageView);
         }
 
@@ -115,7 +117,7 @@ public class MainFragment extends Fragment {
         }
 
         private void addData(GifsData gifsData) {
-            gifsDataList.add(gifsData);
+            gifsDataList.addAll(gifsData.data);
             notifyDataSetChanged();
         }
 
