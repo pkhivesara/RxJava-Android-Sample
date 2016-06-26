@@ -59,27 +59,11 @@ public class MainFragment extends Fragment {
          RestWebClient.get().getTrendingGifs("dc6zaTOxFJmzC")
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(resultSubscriber);
+                .subscribe(gifsData -> myAdapter.addData(gifsData));
 
     }
 
-    Subscriber<GifsData> resultSubscriber = new Subscriber<GifsData>() {
-        @Override
-        public void onCompleted() {
 
-        }
-
-        @Override
-        public void onError(Throwable e) {
-        Log.e("#####",e.toString());
-        }
-
-        @Override
-        public void onNext(GifsData gifsData) {
-
-            myAdapter.addData(gifsData);
-        }
-    };
 
     public static MainFragment newInstance() {
         return new MainFragment();
