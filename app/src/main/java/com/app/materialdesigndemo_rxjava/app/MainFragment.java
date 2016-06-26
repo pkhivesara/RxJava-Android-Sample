@@ -5,17 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import com.app.materialdesigndemo_rxjava.app.model.GifsData;
+import com.app.materialdesigndemo_rxjava.app.model.RandomGifs;
+import com.app.materialdesigndemo_rxjava.app.presenters.MainFragmentPresenter;
 import com.squareup.picasso.Picasso;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +23,13 @@ import java.util.List;
 /**
  * Created by Pratik on 6/25/16.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements MainFragmentPresenter.MainFragmentPresenterInterface {
     MyAdapter myAdapter;
-
+MainFragmentPresenter mainFragmentPresenter;
 
     @Bind(R.id.images_list)
     RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class MainFragment extends Fragment {
 
         ButterKnife.bind(this, view);
         setUpRecyclerView();
-        loadDataFromGiphysApi();
+        mainFragmentPresenter = new MainFragmentPresenter(this);
         return view;
 
     }
@@ -50,23 +51,15 @@ public class MainFragment extends Fragment {
         recyclerView.setAdapter(myAdapter);
     }
 
-    private void loadDataFromGiphysApi() {
-
-        makeRetrofitCall();
-    }
-
-    private void makeRetrofitCall() {
-         RestWebClient.get().getTrendingGifs("dc6zaTOxFJmzC")
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(gifsData -> myAdapter.addData(gifsData));
-
-    }
-
 
 
     public static MainFragment newInstance() {
         return new MainFragment();
+    }
+
+    @Override
+    public void showTrendingList(Pair<GifsData,RandomGifs> gifsData) {
+        myAdapter.addData(gifsData.first);
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MainViewHolder> {
@@ -77,6 +70,7 @@ public class MainFragment extends Fragment {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.image_row, parent, false);
             return new MainViewHolder(v);
         }
+
 
         @Override
         public void onBindViewHolder(MyAdapter.MainViewHolder holder, int position) {
