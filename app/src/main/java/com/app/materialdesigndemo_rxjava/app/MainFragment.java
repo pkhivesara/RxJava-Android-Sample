@@ -1,22 +1,31 @@
 package com.app.materialdesigndemo_rxjava.app;
 
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.util.Pair;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
+import android.widget.EditText;
 import android.widget.ImageView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.app.materialdesigndemo_rxjava.app.model.GifsData;
 import com.app.materialdesigndemo_rxjava.app.model.RandomGifs;
 import com.app.materialdesigndemo_rxjava.app.presenters.MainFragmentPresenter;
+import com.jakewharton.rxbinding.widget.RxSearchView;
+import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
+import rx.Observable;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +34,15 @@ import java.util.List;
  */
 public class MainFragment extends Fragment implements MainFragmentPresenter.MainFragmentPresenterInterface {
     MyAdapter myAdapter;
-MainFragmentPresenter mainFragmentPresenter;
+    MainFragmentPresenter mainFragmentPresenter;
 
     @Bind(R.id.images_list)
     RecyclerView recyclerView;
+
+    @Bind(R.id.editText)
+    EditText editText;
+
+    SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,8 +50,10 @@ MainFragmentPresenter mainFragmentPresenter;
         View view = inflater.inflate(R.layout.fragment_first, container, false);
 
         ButterKnife.bind(this, view);
+        setHasOptionsMenu(true);
         setUpRecyclerView();
         mainFragmentPresenter = new MainFragmentPresenter(this);
+
         return view;
 
     }
@@ -51,15 +67,40 @@ MainFragmentPresenter mainFragmentPresenter;
         recyclerView.setAdapter(myAdapter);
     }
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mainFragmentPresenter.startDebounceListenerForSearch(searchView);
+
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
 
     public static MainFragment newInstance() {
         return new MainFragment();
     }
 
     @Override
-    public void showTrendingList(Pair<GifsData,RandomGifs> gifsData) {
+    public void showTrendingList(Pair<GifsData, RandomGifs> gifsData) {
         myAdapter.addData(gifsData.first);
+    }
+
+    @Override
+    public void displaySearchedGifsList(GifsData gifsData) {
+        myAdapter.addData(gifsData);
     }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MainViewHolder> {
@@ -99,10 +140,11 @@ MainFragmentPresenter mainFragmentPresenter;
             notifyDataSetChanged();
         }
 
-        private void clear(){
+        private void clear() {
             gifsDataList.clear();
             notifyDataSetChanged();
         }
+
     }
 
 }
