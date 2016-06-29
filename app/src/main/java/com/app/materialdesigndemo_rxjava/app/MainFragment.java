@@ -14,20 +14,26 @@ import android.util.Pair;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.app.materialdesigndemo_rxjava.app.model.GifsData;
 import com.app.materialdesigndemo_rxjava.app.model.RandomGifs;
+import com.app.materialdesigndemo_rxjava.app.network.RestWebClient;
 import com.app.materialdesigndemo_rxjava.app.presenters.MainFragmentPresenter;
 import com.jakewharton.rxbinding.widget.RxSearchView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Pratik on 6/25/16.
@@ -42,7 +48,6 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
     @Bind(R.id.editText)
     EditText editText;
 
-    SearchView searchView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,10 +58,26 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
         setHasOptionsMenu(true);
         setUpRecyclerView();
         mainFragmentPresenter = new MainFragmentPresenter(this);
+       // mainFragmentPresenter.startDebounceListenerForSearch(editText);
 
+//        RxTextView.textChangeEvents(editText).
+//                observeOn(AndroidSchedulers.mainThread()).
+//                subscribeOn(Schedulers.newThread()).
+//                map(event -> event.toString()).
+//                flatMap(s -> RestWebClient.get().getSearchedGifs(s,"dc6zaTOxFJmzC")).
+//                subscribe(OnNextAction,onErrorAction);
+//        RxTextView.textChangeEvents(editText).
+//                debounce(400,TimeUnit.MILLISECONDS,Schedulers.newThread())
+//                .map(event -> event.toString())
+//                .subscribeOn(AndroidSchedulers.mainThread())
+//                .flatMap(s -> RestWebClient.get().getSearchedGifs(s,"dc6zaTOxFJmzC"))
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(OnNextAction,onErrorAction);
         return view;
 
     }
+
+
 
     private void setUpRecyclerView() {
         LinearLayoutManager gridLayoutManager = new LinearLayoutManager(getActivity());
@@ -70,7 +91,10 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-         searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+        mainFragmentPresenter.startDebounceListenerForSearch(searchView);
 
     }
 
@@ -78,7 +102,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mainFragmentPresenter.startDebounceListenerForSearch(searchView);
+//f        mainFragmentPresenter.startDebounceListenerForSearch(searchView);
 
 
     }
@@ -87,6 +111,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_main, menu);
+
     }
 
     public static MainFragment newInstance() {
@@ -136,6 +161,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
         }
 
         private void addData(GifsData gifsData) {
+            gifsDataList.clear();
             gifsDataList.addAll(gifsData.data);
             notifyDataSetChanged();
         }
