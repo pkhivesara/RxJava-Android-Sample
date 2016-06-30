@@ -2,9 +2,11 @@ package com.app.materialdesigndemo_rxjava.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.app.materialdesigndemo_rxjava.app.fragments.LoginFragment;
+import com.app.materialdesigndemo_rxjava.app.fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportFragmentManager().beginTransaction()
-                                   .add(R.id.container_layout,MainFragment.newInstance())
+                                   .add(R.id.container_layout, LoginFragment.newInstance())
                                    .commit();
 
     }

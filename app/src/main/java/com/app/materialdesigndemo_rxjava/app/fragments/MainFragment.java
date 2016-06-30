@@ -1,4 +1,4 @@
-package com.app.materialdesigndemo_rxjava.app;
+package com.app.materialdesigndemo_rxjava.app.fragments;
 
 
 import android.app.SearchManager;
@@ -9,31 +9,23 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.util.Pair;
 import android.view.*;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import com.app.materialdesigndemo_rxjava.app.DividerDecoration;
+import com.app.materialdesigndemo_rxjava.app.R;
 import com.app.materialdesigndemo_rxjava.app.model.GifsData;
 import com.app.materialdesigndemo_rxjava.app.model.RandomGifs;
-import com.app.materialdesigndemo_rxjava.app.network.RestWebClient;
 import com.app.materialdesigndemo_rxjava.app.presenters.MainFragmentPresenter;
-import com.jakewharton.rxbinding.widget.RxSearchView;
-import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Pratik on 6/25/16.
