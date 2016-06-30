@@ -6,9 +6,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
-/**
- * Created by Pratik on 6/25/16.
- */
+
 public class RestWebClient {
     private static ApiCall REST_CLIENT;
 
