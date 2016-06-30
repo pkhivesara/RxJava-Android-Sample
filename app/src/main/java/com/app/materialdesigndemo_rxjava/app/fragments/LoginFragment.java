@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import com.app.materialdesigndemo_rxjava.app.R;
 import com.app.materialdesigndemo_rxjava.app.presenters.LoginFragmentPresenter;
@@ -20,6 +21,9 @@ LoginFragmentPresenter loginFragmentPresenter;
 
 	@Bind(R.id.password_edit_text)
 	EditText passwordEditText;
+
+	@Bind(R.id.login_button)
+	Button loginButton;
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -45,5 +49,10 @@ LoginFragmentPresenter loginFragmentPresenter;
 	@Override
 	public void setPasswordTextColor(int color) {
 		passwordEditText.setTextColor(color);
+	}
+
+	@Override
+	public void handleButtonState(boolean value) {
+		loginButton.setEnabled(value);
 	}
 }
