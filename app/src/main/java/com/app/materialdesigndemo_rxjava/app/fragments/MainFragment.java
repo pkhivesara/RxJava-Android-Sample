@@ -11,35 +11,25 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Pair;
 import android.view.*;
-import android.widget.EditText;
 import android.widget.ImageView;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 import com.app.materialdesigndemo_rxjava.app.DividerDecoration;
 import com.app.materialdesigndemo_rxjava.app.R;
 import com.app.materialdesigndemo_rxjava.app.model.GifsData;
 import com.app.materialdesigndemo_rxjava.app.model.RandomGifs;
 import com.app.materialdesigndemo_rxjava.app.presenters.MainFragmentPresenter;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Pratik on 6/25/16.
- */
+
 public class MainFragment extends Fragment implements MainFragmentPresenter.MainFragmentPresenterInterface {
     MyAdapter myAdapter;
     MainFragmentPresenter mainFragmentPresenter;
 
     @Bind(R.id.images_list)
     RecyclerView recyclerView;
-
-    @Bind(R.id.editText)
-    EditText editText;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,21 +40,7 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
         setHasOptionsMenu(true);
         setUpRecyclerView();
         mainFragmentPresenter = new MainFragmentPresenter(this);
-       // mainFragmentPresenter.startDebounceListenerForSearch(editText);
 
-//        RxTextView.textChangeEvents(editText).
-//                observeOn(AndroidSchedulers.mainThread()).
-//                subscribeOn(Schedulers.newThread()).
-//                map(event -> event.toString()).
-//                flatMap(s -> RestWebClient.get().getSearchedGifs(s,"dc6zaTOxFJmzC")).
-//                subscribe(OnNextAction,onErrorAction);
-//        RxTextView.textChangeEvents(editText).
-//                debounce(400,TimeUnit.MILLISECONDS,Schedulers.newThread())
-//                .map(event -> event.toString())
-//                .subscribeOn(AndroidSchedulers.mainThread())
-//                .flatMap(s -> RestWebClient.get().getSearchedGifs(s,"dc6zaTOxFJmzC"))
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(OnNextAction,onErrorAction);
         return view;
 
     }
@@ -94,7 +70,6 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//f        mainFragmentPresenter.startDebounceListenerForSearch(searchView);
 
 
     }
@@ -158,10 +133,6 @@ public class MainFragment extends Fragment implements MainFragmentPresenter.Main
             notifyDataSetChanged();
         }
 
-        private void clear() {
-            gifsDataList.clear();
-            notifyDataSetChanged();
-        }
 
     }
 

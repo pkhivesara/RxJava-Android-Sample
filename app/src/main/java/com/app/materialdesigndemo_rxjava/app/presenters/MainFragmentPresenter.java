@@ -6,16 +6,11 @@ import com.app.materialdesigndemo_rxjava.app.model.GifsData;
 import com.app.materialdesigndemo_rxjava.app.model.RandomGifs;
 import com.app.materialdesigndemo_rxjava.app.network.RestWebClient;
 import com.jakewharton.rxbinding.support.v7.widget.RxSearchView;
-
 import rx.android.schedulers.AndroidSchedulers;
-
 import rx.schedulers.Schedulers;
-
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by Pratik on 6/26/16.
- */
+
 public class MainFragmentPresenter {
     MainFragmentPresenterInterface mainFragmentPresenterInterface;
 
