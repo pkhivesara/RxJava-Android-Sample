@@ -17,12 +17,16 @@ public class GithubSuggestionsFragmentPresenter {
 	}
 
 	public void getGithubUsers() {
-		RestWebClient.get().getGithubUsers().
+		RestWebClient.get().getGithubUsers(generateRandomYear()).
 				flatMap(githubUsersList -> Observable.from(githubUsersList)).
 				take(3).
 				subscribeOn(Schedulers.newThread()).
 				observeOn(AndroidSchedulers.mainThread()).
 				subscribe(githubUsers -> githubSuggestionsFragmentPresenterInterface.setUserDetails(githubUsers));
+	}
+
+	private String generateRandomYear(){
+		return Double.toString(Math.floor(Math.random() * 500));
 	}
 
 	public interface GithubSuggestionsFragmentPresenterInterface {

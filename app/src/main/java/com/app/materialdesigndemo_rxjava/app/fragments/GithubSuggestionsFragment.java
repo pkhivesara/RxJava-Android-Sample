@@ -17,11 +17,19 @@ import com.app.materialdesigndemo_rxjava.app.presenters.MainFragmentPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class GithubSuggestionsFragment extends Fragment implements GithubSuggestionsFragmentPresenter.GithubSuggestionsFragmentPresenterInterface {
 	@Bind(R.id.textView)
 	TextView textView;
+
+
+
+	@OnClick(R.id.refresh_button)
+	public void makeCall(){
+		showUsers();
+	}
 
 	StringBuilder stringBuilder;
 	GithubSuggestionsFragmentPresenter githubSuggestionsFragmentPresenter;
@@ -33,8 +41,13 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 		stringBuilder = new StringBuilder();
 		ButterKnife.bind(this, view);
 		githubSuggestionsFragmentPresenter = new GithubSuggestionsFragmentPresenter(this);
-		githubSuggestionsFragmentPresenter.getGithubUsers();
+		showUsers();
 		return view;
+	}
+
+	private void showUsers() {
+		stringBuilder.setLength(0);
+		githubSuggestionsFragmentPresenter.getGithubUsers();
 	}
 
 	public static GithubSuggestionsFragment newInstance() {

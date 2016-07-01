@@ -23,7 +23,7 @@ public interface ApiCall {
     Observable<GifsData> getSearchedGifs(@Query("q") String search_string, @Query("api_key") String api_key);
 
     @GET("https://api.github.com/users")
-    Observable<List<GithubUsers>> getGithubUsers();
+    Observable<List<GithubUsers>> getGithubUsers(@Query("since") String year);
 
 
 
