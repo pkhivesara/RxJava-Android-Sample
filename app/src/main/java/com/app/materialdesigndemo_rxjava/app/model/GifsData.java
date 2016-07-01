@@ -4,9 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by Pratik on 6/25/16.
- */
+
 public class GifsData {
     @SerializedName("data")
     public List<DataObject> data;

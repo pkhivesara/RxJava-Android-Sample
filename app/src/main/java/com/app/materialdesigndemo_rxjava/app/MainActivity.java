@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.app.materialdesigndemo_rxjava.app.fragments.GithubSuggestionsFragment;
 import com.app.materialdesigndemo_rxjava.app.fragments.LoginFragment;
 import com.app.materialdesigndemo_rxjava.app.fragments.MainFragment;
 
@@ -16,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         getSupportFragmentManager().beginTransaction()
-                                   .add(R.id.container_layout, LoginFragment.newInstance())
+                                   .add(R.id.container_layout, GithubSuggestionsFragment.newInstance())
                                    .commit();
 
     }
