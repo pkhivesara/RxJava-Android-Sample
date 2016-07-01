@@ -17,8 +17,14 @@ import rx.subscriptions.CompositeSubscription;
 
 
 public class GithubSuggestionsFragment extends Fragment implements GithubSuggestionsFragmentPresenter.GithubSuggestionsFragmentPresenterInterface {
-	@Bind(R.id.textView)
-	TextView textView;
+	@Bind(R.id.first_user_name)
+	TextView firstUserNameTextView;
+
+	@Bind(R.id.second_user_name)
+	TextView secondUserNameTextView;
+
+	@Bind(R.id.third_user_name)
+	TextView thirdUserNameTextView;
 
 	@OnClick(R.id.refresh_button)
 	public void makeCall() {
@@ -27,7 +33,6 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 
 
 	CompositeSubscription compositeSubscription;
-	StringBuilder stringBuilder;
 	GithubSuggestionsFragmentPresenter githubSuggestionsFragmentPresenter;
 
 	@Override
@@ -41,7 +46,6 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_github, container, false);
-		stringBuilder = new StringBuilder();
 		ButterKnife.bind(this, view);
 		githubSuggestionsFragmentPresenter = new GithubSuggestionsFragmentPresenter(this,compositeSubscription);
 		showUsers();
@@ -49,7 +53,6 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 	}
 
 	private void showUsers() {
-		stringBuilder.setLength(0);
 		githubSuggestionsFragmentPresenter.getGithubUsers();
 	}
 
@@ -66,7 +69,8 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 
 	@Override
 	public void setUserDetails(GithubUsers githubUsers) {
-		stringBuilder.append(githubUsers.login).append(" ");
-		textView.setText(stringBuilder);
+		firstUserNameTextView.setText(githubUsers.login);
+		secondUserNameTextView.setText(githubUsers.login);
+		thirdUserNameTextView.setText(githubUsers.login);
 	}
 }
