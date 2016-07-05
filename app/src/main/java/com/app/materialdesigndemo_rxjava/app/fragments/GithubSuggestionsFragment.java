@@ -3,13 +3,21 @@ package com.app.materialdesigndemo_rxjava.app.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.app.materialdesigndemo_rxjava.app.R;
 import com.app.materialdesigndemo_rxjava.app.model.GithubUsers;
 import com.app.materialdesigndemo_rxjava.app.presenters.GithubSuggestionsFragmentPresenter;
+
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -17,23 +25,20 @@ import rx.subscriptions.CompositeSubscription;
 
 
 public class GithubSuggestionsFragment extends Fragment implements GithubSuggestionsFragmentPresenter.GithubSuggestionsFragmentPresenterInterface {
-	@Bind(R.id.first_user_name)
-	TextView firstUserNameTextView;
+	@Bind(R.id.recycler_view)
+	RecyclerView recyclerView;
 
-	@Bind(R.id.second_user_name)
-	TextView secondUserNameTextView;
 
-	@Bind(R.id.third_user_name)
-	TextView thirdUserNameTextView;
-
-	@OnClick(R.id.refresh_button)
-	public void makeCall() {
-		showUsers();
-	}
+//	@OnClick(R.id.refresh_button)
+//	public void makeCall() {
+//		showUsers();
+//	}
 
 
 	CompositeSubscription compositeSubscription;
 	GithubSuggestionsFragmentPresenter githubSuggestionsFragmentPresenter;
+	GithubSuggestionAdapter githubSuggestionAdapter;
+	List<GithubUsers> githubUsers;
 
 	@Override
 	public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,14 +52,24 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_github, container, false);
 		ButterKnife.bind(this, view);
-		githubSuggestionsFragmentPresenter = new GithubSuggestionsFragmentPresenter(this,compositeSubscription);
+		githubSuggestionsFragmentPresenter = new GithubSuggestionsFragmentPresenter(this, compositeSubscription);
 		showUsers();
+
 		return view;
 	}
 
 	private void showUsers() {
 		githubSuggestionsFragmentPresenter.getGithubUsers();
 	}
+
+
+	private void setupRecyclerView(List<GithubUsers> githubUsers) {
+		githubSuggestionAdapter = new GithubSuggestionAdapter(githubUsers);
+		LinearLayoutManager linearLayout = new LinearLayoutManager(getActivity());
+		recyclerView.setLayoutManager(linearLayout);
+		recyclerView.setAdapter(githubSuggestionAdapter);
+	}
+
 
 	@Override
 	public void onDestroyView() {
@@ -68,9 +83,53 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 	}
 
 	@Override
-	public void setUserDetails(GithubUsers githubUsers) {
-		firstUserNameTextView.setText(githubUsers.login);
-		secondUserNameTextView.setText(githubUsers.login);
-		thirdUserNameTextView.setText(githubUsers.login);
+	public void setUserDetails(List<GithubUsers> githubUsers) {
+		setupRecyclerView(githubUsers);
+		this.githubUsers = githubUsers;
+
+	}
+
+	public class GithubSuggestionAdapter extends RecyclerView.Adapter<GithubSuggestionAdapter.MainViewHolder> {
+		List<GithubUsers> gitHubUsersList;
+		public GithubSuggestionAdapter(List<GithubUsers> githubUsersList){
+			this.gitHubUsersList = githubUsersList;
+
+		}
+		@Override
+		public GithubSuggestionAdapter.MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+			LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+			ViewGroup viewGroup = (ViewGroup) layoutInflater.inflate(R.layout.item_row,parent,false);
+			return new MainViewHolder(viewGroup);
+		}
+
+		@Override
+		public void onBindViewHolder(GithubSuggestionAdapter.MainViewHolder holder, int position) {
+			MainViewHolder listViewHolder = holder;
+			listViewHolder.textView.setText(githubUsers.get(position).login);
+		}
+
+		@Override
+		public int getItemCount() {
+			return gitHubUsersList.size();
+		}
+
+		public class MainViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+			@Bind(R.id.text_view)
+			TextView textView;
+
+			public MainViewHolder(View itemView) {
+				super(itemView);
+				ButterKnife.bind(this, itemView);
+				itemView.setOnClickListener(this);
+			}
+
+			@Override
+			public void onClick(View v) {
+
+			}
+		}
 	}
 }
+
+
+
