@@ -9,12 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.materialdesigndemo_rxjava.app.R;
 import com.app.materialdesigndemo_rxjava.app.model.GithubUsers;
 import com.app.materialdesigndemo_rxjava.app.presenters.GithubSuggestionsFragmentPresenter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -106,6 +110,7 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 		public void onBindViewHolder(GithubSuggestionAdapter.MainViewHolder holder, int position) {
 			MainViewHolder listViewHolder = holder;
 			listViewHolder.textView.setText(githubUsers.get(position).login);
+			Picasso.with(getActivity()).load(githubUsers.get(position).avatar_url).into(listViewHolder.imageView);
 		}
 
 		@Override
@@ -117,15 +122,26 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 			@Bind(R.id.text_view)
 			TextView textView;
 
+			@Bind(R.id.close_button)
+			Button closeButton;
+
+			@Bind(R.id.image_view)
+			ImageView imageView;
+
 			public MainViewHolder(View itemView) {
 				super(itemView);
 				ButterKnife.bind(this, itemView);
-				itemView.setOnClickListener(this);
+				textView.setOnClickListener(this);
 			}
+
 
 			@Override
 			public void onClick(View v) {
-
+			if(v.getId() == R.id.text_view){
+				Toast.makeText(getActivity(),"Will redirect user to: " + githubUsers.get(getAdapterPosition()).html_url,Toast.LENGTH_SHORT).show();
+			}else if(v.getId() == R.id.close_button){
+				//
+			}
 			}
 		}
 	}
