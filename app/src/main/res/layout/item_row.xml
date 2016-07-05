@@ -4,7 +4,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
     <Button
         android:id="@+id/thumbNailImageView"
         android:layout_width="80dip"
