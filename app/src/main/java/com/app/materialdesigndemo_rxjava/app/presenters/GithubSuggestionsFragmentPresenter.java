@@ -22,7 +22,9 @@ public class GithubSuggestionsFragmentPresenter {
 
 	public void getGithubUsers() {
 		compositeSubscription.add(RestWebClient.get().getGithubUsers(generateRandomYear()).
+				flatMap(githubUsersList -> Observable.from(githubUsersList)).
 				take(3).
+				toList().
 				subscribeOn(Schedulers.newThread()).
 				observeOn(AndroidSchedulers.mainThread()).
 				subscribe(githubUsers -> githubSuggestionsFragmentPresenterInterface.setUserDetails(githubUsers)));

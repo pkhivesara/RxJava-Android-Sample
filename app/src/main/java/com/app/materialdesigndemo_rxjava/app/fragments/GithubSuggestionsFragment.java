@@ -29,10 +29,10 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 	RecyclerView recyclerView;
 
 
-//	@OnClick(R.id.refresh_button)
-//	public void makeCall() {
-//		showUsers();
-//	}
+	@OnClick(R.id.refresh_button)
+	public void makeCall() {
+		showUsers();
+	}
 
 
 	CompositeSubscription compositeSubscription;
