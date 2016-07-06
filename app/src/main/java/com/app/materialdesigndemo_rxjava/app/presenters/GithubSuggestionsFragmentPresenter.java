@@ -33,13 +33,12 @@ public class GithubSuggestionsFragmentPresenter {
 				observeOn(AndroidSchedulers.mainThread()).
 				subscribe(githubUsers -> githubSuggestionsFragmentPresenterInterface.setUserDetails(githubUsers)));
 	}
+
 	public void getRandomUser(int position){
-		Random r = new Random();
-		int Low = 0;
-		int High = 30;
-		int Result = r.nextInt(High-Low) + Low;
-		compositeSubscription.add(cachedObservable.flatMap(githubUsersList1 -> Observable.from(githubUsersList1))
-		.elementAt(Result).subscribe(githubUsersList -> githubSuggestionsFragmentPresenterInterface.setRandomUser(position, githubUsersList)));
+		compositeSubscription.add(cachedObservable.
+				flatMap(githubUsersList1 -> Observable.from(githubUsersList1))
+				.elementAt(new Random().nextInt(30))
+				.subscribe(githubUsersList -> githubSuggestionsFragmentPresenterInterface.setRandomUser(position, githubUsersList)));
 	}
 
 	private String generateRandomYear() {
