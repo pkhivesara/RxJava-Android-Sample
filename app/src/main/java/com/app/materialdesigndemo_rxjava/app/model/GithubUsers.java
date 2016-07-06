@@ -11,4 +11,5 @@ public class GithubUsers {
 	public String html_url;
 	public String type;
 	public String site_admin;
+
 }

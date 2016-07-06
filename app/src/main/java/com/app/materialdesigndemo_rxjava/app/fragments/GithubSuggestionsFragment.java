@@ -20,6 +20,7 @@ import com.app.materialdesigndemo_rxjava.app.model.GithubUsers;
 import com.app.materialdesigndemo_rxjava.app.presenters.GithubSuggestionsFragmentPresenter;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -93,6 +94,13 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 
 	}
 
+	@Override
+	public void setRandomUser(int position, GithubUsers githubUsers) {
+		this.githubUsers.set(position,githubUsers);
+		githubSuggestionAdapter.notifyItemChanged(position,null);
+
+	}
+
 	public class GithubSuggestionAdapter extends RecyclerView.Adapter<GithubSuggestionAdapter.MainViewHolder> {
 		List<GithubUsers> gitHubUsersList;
 		public GithubSuggestionAdapter(List<GithubUsers> githubUsersList){
@@ -132,6 +140,7 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 				super(itemView);
 				ButterKnife.bind(this, itemView);
 				textView.setOnClickListener(this);
+				closeButton.setOnClickListener(this);
 			}
 
 
@@ -140,7 +149,7 @@ public class GithubSuggestionsFragment extends Fragment implements GithubSuggest
 			if(v.getId() == R.id.text_view){
 				Toast.makeText(getActivity(),"Will redirect user to: " + githubUsers.get(getAdapterPosition()).html_url,Toast.LENGTH_SHORT).show();
 			}else if(v.getId() == R.id.close_button){
-				//
+				githubSuggestionsFragmentPresenter.getRandomUser(getAdapterPosition());
 			}
 			}
 		}
