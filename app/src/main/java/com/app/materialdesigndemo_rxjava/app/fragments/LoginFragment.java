@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import butterknife.OnClick;
 import com.app.materialdesigndemo_rxjava.app.R;
 import com.app.materialdesigndemo_rxjava.app.presenters.LoginFragmentPresenter;
 import butterknife.Bind;
@@ -24,6 +25,12 @@ LoginFragmentPresenter loginFragmentPresenter;
 
 	@Bind(R.id.login_button)
 	Button loginButton;
+
+	@OnClick(R.id.login_button)
+	public void makeADummyCallToTestRetryWhenOperator(){
+	loginFragmentPresenter.makeADummyCallToTestRetryWhenOperator();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
